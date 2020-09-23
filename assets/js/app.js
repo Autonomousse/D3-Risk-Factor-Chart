@@ -113,3 +113,77 @@ function renderYCircles(circlesYGroup, newLinearYScale, chosenYAxis) {
 }
 
 // Function used to update the tooltip for different sets of circle groups
+// Only create tooltip on the circlesXGroup, would be redundent to create it on the circlesYGroup as well
+function updateToolTip(chosenXAxis, chosenYAxis, circlesXGroup) {
+
+  // Create labels to hold the text to output based on selections
+  var labelX;
+  var labelY;
+
+  // Check to see which selections have been made by the user and adjust the labels
+  if (chosenXAxis === "poverty") {
+    if(chosenYAxis === "healthcare") {
+      labelX = "Poverty:";
+      labelY = "Healthcare";
+    }
+    else if (chosenYAxis === "smokes") {
+      labelX = "Poverty:";
+      labelY = "Smokes:";
+    }
+    else if (chosenYAxis === "obesity") {
+      labelX = "Poverty:";
+      labelY = "Obesity:";
+    }
+  }
+  if (chosenXAxis === "age") {
+    if(chosenYAxis === "healthcare") {
+      labelX = "Age:";
+      labelY = "Healthcare";
+    }
+    else if (chosenYAxis === "smokes") {
+      labelX = "Age:";
+      labelY = "Smokes:";
+    }
+    else if (chosenYAxis === "obesity") {
+      labelX = "Age:";
+      labelY = "Obesity:";
+    }
+  }
+  if (chosenXAxis === "income") {
+    if(chosenYAxis === "healthcare") {
+      labelX = "Income:";
+      labelY = "Healthcare";
+    }
+    else if (chosenYAxis === "smokes") {
+      labelX = "Income:";
+      labelY = "Smokes:";
+    }
+    else if (chosenYAxis === "obesity") {
+      labelX = "Income:";
+      labelY = "Obesity:";
+    }
+  }
+
+  // Create the toolTip with the relevant information
+  var toolTip = d3.tip()
+    .attr("class", "d3-tip")
+    .offset([80, -60])
+    .html(function(values) {
+      return (`${d.state}<hr>${labelX} ${values[chosenXAxis]}<br>${labelY} ${values[chosenYAxis]}`)
+    });
+
+  // Call the toolTip
+  circlesXGroup.call(toolTip);
+
+  // When user hovers over circleGroup object, display the data
+  circlesXGroup.on("mouseover", function(data) {
+    toolTip.show(data);
+    // TODO : Create outline around the circle
+  })
+    // When user is no longer over the circleGroup object, hide the data
+    .on("mouseout", function(data, index) {
+      toolTip.hide(data);
+    });
+
+  return circlesXGroup;
+}
