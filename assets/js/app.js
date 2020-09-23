@@ -89,3 +89,27 @@ function renderYAxis(newLinearYScale, yAxis) {
   // Return the new y-axis
   return yAxis;
 }
+
+// Function used to update the circle group when the user changes the x-axis
+function renderXCircles(circlesXGroup, newLinearXScale, chosenXAxis) {
+  
+  // Transition the circle group to the newly chosen x-axis
+  circlesXGroup.transition()
+    .duration(1000)
+    .attr("cx", values => newLinearXScale(values[chosenXAxis]));
+
+  return circlesXGroup;
+}
+
+// Function used to update the circle group when the user changes the y-axis
+function renderYCircles(circlesYGroup, newLinearYScale, chosenYAxis) {
+  
+  // Transition the circle group to the newly chosen y-axis
+  circlesYGroup.transition()
+    .duration(1000)
+    .attr("cy", values => newLinearYScale(values[chosenYAxis]));
+
+  return circlesYGroup;
+}
+
+// Function used to update the tooltip for different sets of circle groups
