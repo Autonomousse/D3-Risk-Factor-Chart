@@ -166,10 +166,10 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesXGroup) {
 
   // Create the toolTip with the relevant information
   var toolTip = d3.tip()
-    .attr("class", ".d3-tip")
+    .attr("class", "d3-tip")
     .offset([80, -60])
     .html(function (values) {
-      return (`${d.state}<hr>${labelX} ${values[chosenXAxis]}<br>${labelY} ${values[chosenYAxis]}`)
+      return (`${values.state}<hr>${labelX} ${values[chosenXAxis]}<br>${labelY} ${values[chosenYAxis]}`)
     });
 
   // Call the toolTip
@@ -218,10 +218,10 @@ d3.csv("../../assets/data/data.csv").then(function (riskData, err) {
     .attr("transform", `translate(0, ${height})`)
     .call(axisBottom);
 
-  // Apped the y-axis
+  // Append the y-axis
   var yAxis = chartGroup.append("g")
     .classed("y-axis", true)
-    .attr("transform", `translate(${width}, 0)`)
+    .attr("transform", `translate(0, 0)`)
     .call(axisLeft);
 
   // Append the initial circles
@@ -267,22 +267,22 @@ d3.csv("../../assets/data/data.csv").then(function (riskData, err) {
 
   var healthcareLabel = yLabelsGroup.append("text")
     .attr("x", 0 - (height / 2))
-    .attr("y", 0 - margin.left)
+    .attr("y", 0 - margin.left + 60)
     .attr("value", "healthcare") // value to grab for event listener
     .classed("active", true)
     .text("Lacks Healthcare (%)");
 
   var smokesLabel = yLabelsGroup.append("text")
     .attr("x", 0 - (height / 2))
-    .attr("y", 0 - margin.left + 20)
+    .attr("y", 0 - margin.left + 40)
     .attr("value", "smokes") // value to grab for event listener
     .classed("inactive", true)
     .text("Smokes (%)");
 
   var obeseLabel = yLabelsGroup.append("text")
     .attr("x", 0 - (height / 2))
-    .attr("y", 0 - margin.left + 40)
-    .attr("value", "healthcare") // value to grab for event listener
+    .attr("y", 0 - margin.left + 20)
+    .attr("value", "obesity") // value to grab for event listener
     .classed("inactive", true)
     .text("Obese (%)");
 
@@ -376,7 +376,7 @@ d3.csv("../../assets/data/data.csv").then(function (riskData, err) {
             .classed("active", false)
             .classed("inactive", true);
         }
-        else if (chosenYAxis === "age") {
+        else if (chosenYAxis === "smokes") {
           healthcareLabel
             .classed("active", false)
             .classed("inactive", true);
@@ -387,7 +387,7 @@ d3.csv("../../assets/data/data.csv").then(function (riskData, err) {
             .classed("active", false)
             .classed("inactive", true);
         }
-        else if (chosenYAxis === "income") {
+        else if (chosenYAxis === "obesity") {
           healthcareLabel
             .classed("active", false)
             .classed("inactive", true);
