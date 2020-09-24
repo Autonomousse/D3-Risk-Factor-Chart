@@ -1,5 +1,5 @@
 // Set the width and height of the scalable vector graphic
-var svgWidth = 1000;
+var svgWidth = 1200;
 var svgHeight = 750;
 
 // Create a margin around the SVG
@@ -7,7 +7,7 @@ var margin = {
   top: 50,
   right: 50,
   bottom: 100,
-  left: 160
+  left: 100
 };
 
 // Set the width and height for the chart (space where chart will be mapped)
@@ -35,8 +35,8 @@ function xScale(riskData, chosenXAxis) {
   // Use scaleLinear to create the scale since values are numerical
   // Set the min and max values so we can transition the scale later
   var xLinearScale = d3.scaleLinear()
-    .domain([d3.min(riskData, values => values[chosenXAxis]) /* some number to further pad*/, // CAN THIS BE CHANGED TO d3.extent? Check with console.log
-    d3.max(riskData, values => values[chosenXAxis]) /* some number to further pad*/
+    .domain([d3.min(riskData, values => values[chosenXAxis]) * 0.95,
+    d3.max(riskData, values => values[chosenXAxis])
     ])
     .range([0, width]);
 
@@ -51,8 +51,8 @@ function yScale(riskData, chosenYAxis) {
   // Set the min and max values so we can transition the scale later
   // height first because the chart is created top down (0,0 is at the top left)
   var yLinearScale = d3.scaleLinear()
-    .domain([d3.min(riskData, values => values[chosenYAxis]) /* some number to further pad*/,
-    d3.max(riskData, values => values[chosenYAxis]) /* some number to further pad*/
+    .domain([d3.min(riskData, values => values[chosenYAxis]) * 0.8,
+    d3.max(riskData, values => values[chosenYAxis])
     ])
     .range([height, 0]);
 
@@ -91,23 +91,31 @@ function renderYAxis(newLinearYScale, yAxis) {
 }
 
 // Function used to update the circle group when the user changes the x-axis
-function renderXCircles(circlesXGroup, newLinearXScale, chosenXAxis) {
+function renderXCircles(circlesXGroup, newLinearXScale, chosenXAxis, circleText) {
 
   // Transition the circle group to the newly chosen x-axis
   circlesXGroup.transition()
     .duration(1000)
     .attr("cx", values => newLinearXScale(values[chosenXAxis]));
 
+  circleText.transition()
+    .duration(1000)
+    .attr("x", values => newLinearXScale(values[chosenXAxis]));
+
   return circlesXGroup;
 }
 
 // Function used to update the circle group when the user changes the y-axis
-function renderYCircles(circlesYGroup, newLinearYScale, chosenYAxis) {
+function renderYCircles(circlesYGroup, newLinearYScale, chosenYAxis, circleText) {
 
   // Transition the circle group to the newly chosen y-axis
   circlesYGroup.transition()
     .duration(1000)
     .attr("cy", values => newLinearYScale(values[chosenYAxis]));
+
+  circleText.transition()
+    .duration(1000)
+    .attr("y", values => newLinearYScale(values[chosenYAxis]));
 
   return circlesYGroup;
 }
@@ -115,7 +123,7 @@ function renderYCircles(circlesYGroup, newLinearYScale, chosenYAxis) {
 // Function used to update the tooltip for different sets of circle groups
 // Only create tooltip on the circlesXGroup, would be redundent to create it on the circlesYGroup as well
 function updateToolTip(chosenXAxis, chosenYAxis, circlesXGroup) {
-
+  console.log(chosenXAxis);
   // Create labels to hold the text to output based on selections
   var labelX;
   var labelY;
@@ -123,44 +131,44 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesXGroup) {
   // Check to see which selections have been made by the user and adjust the labels
   if (chosenXAxis === "poverty") {
     if (chosenYAxis === "healthcare") {
-      labelX = "Poverty:";
-      labelY = "Healthcare";
+      labelX = "Poverty:"
+      labelY = "Healthcare"
     }
     else if (chosenYAxis === "smokes") {
-      labelX = "Poverty:";
-      labelY = "Smokes:";
+      labelX = "Poverty:"
+      labelY = "Smokes:"
     }
     else if (chosenYAxis === "obesity") {
-      labelX = "Poverty:";
-      labelY = "Obesity:";
+      labelX = "Poverty:"
+      labelY = "Obesity:"
     }
   }
   if (chosenXAxis === "age") {
     if (chosenYAxis === "healthcare") {
-      labelX = "Age:";
-      labelY = "Healthcare";
+      labelX = "Age:"
+      labelY = "Healthcare"
     }
     else if (chosenYAxis === "smokes") {
-      labelX = "Age:";
-      labelY = "Smokes:";
+      labelX = "Age:"
+      labelY = "Smokes:"
     }
     else if (chosenYAxis === "obesity") {
-      labelX = "Age:";
-      labelY = "Obesity:";
+      labelX = "Age:"
+      labelY = "Obesity:"
     }
   }
   if (chosenXAxis === "income") {
     if (chosenYAxis === "healthcare") {
-      labelX = "Income:";
-      labelY = "Healthcare";
+      labelX = "Income:"
+      labelY = "Healthcare"
     }
     else if (chosenYAxis === "smokes") {
-      labelX = "Income:";
-      labelY = "Smokes:";
+      labelX = "Income:"
+      labelY = "Smokes:"
     }
     else if (chosenYAxis === "obesity") {
-      labelX = "Income:";
-      labelY = "Obesity:";
+      labelX = "Income:"
+      labelY = "Obesity:"
     }
   }
 
@@ -169,7 +177,15 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesXGroup) {
     .attr("class", "d3-tip")
     .offset([80, -60])
     .html(function (values) {
-      return (`${values.state}<hr>${labelX} ${values[chosenXAxis]}<br>${labelY} ${values[chosenYAxis]}`)
+      if (chosenXAxis === "age") {
+        return (`${values.state}<hr>${labelX} ${values[chosenXAxis]}<br>${labelY} ${values[chosenYAxis]}%`)
+      }
+      else if (chosenXAxis === "income") {
+        return (`${values.state}<hr>${labelX} $${values[chosenXAxis]}<br>${labelY} ${values[chosenYAxis]}%`)
+      }
+      else {
+        return (`${values.state}<hr>${labelX} ${values[chosenXAxis]}%<br>${labelY} ${values[chosenYAxis]}%`)
+      }
     });
 
   // Call the toolTip
@@ -177,8 +193,8 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesXGroup) {
 
   // When user hovers over circleGroup object, display the data
   circlesXGroup.on("mouseover", function (data) {
-    toolTip.show(data);
-    // TODO : Create outline around the circle
+    toolTip.show(data)
+    .attr("stroke", "black")
   })
     // When user is no longer over the circleGroup object, hide the data
     .on("mouseout", function (data, index) {
@@ -232,9 +248,17 @@ d3.csv("../../assets/data/data.csv").then(function (riskData, err) {
     .attr("class", "stateCircle")
     .attr("cx", val => xLinearScale(val[chosenXAxis]))
     .attr("cy", val => yLinearScale(val[chosenYAxis]))
-    .attr("r", 20)
-    // .attr("fill", "blue")
-    // .attr("opacity", 0.5);
+    .attr("r", 20);
+
+  var circleText = chartGroup.selectAll()
+    .data(riskData)
+    .enter()
+    .append("text")
+    .text(val => val.abbr)
+    .attr("dominant-baseline", "central")
+    .attr("class", "stateText")
+    .attr("x", val => xLinearScale(val[chosenXAxis]))
+    .attr("y", val => yLinearScale(val[chosenYAxis]));
 
   // Create group for x-axis labels and append the 3 labels
   var xLabelsGroup = chartGroup.append("g")
@@ -286,6 +310,7 @@ d3.csv("../../assets/data/data.csv").then(function (riskData, err) {
     .classed("inactive", true)
     .text("Obese (%)");
 
+
   // Update the tooltip data
   var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
@@ -307,7 +332,10 @@ d3.csv("../../assets/data/data.csv").then(function (riskData, err) {
         xAxis = renderXAxis(xLinearScale, xAxis);
 
         // Update the circles with new X values
-        circlesGroup = renderXCircles(circlesGroup, xLinearScale, chosenXAxis);
+        circlesGroup = renderXCircles(circlesGroup, xLinearScale, chosenXAxis, circleText);
+
+        // Update the toolTip
+        circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
         if (chosenXAxis === "poverty") {
           povertyLabel
@@ -363,7 +391,10 @@ d3.csv("../../assets/data/data.csv").then(function (riskData, err) {
         yAxis = renderYAxis(yLinearScale, yAxis);
 
         // Update the circles with new X values
-        circlesGroup = renderYCircles(circlesGroup, yLinearScale, chosenYAxis);
+        circlesGroup = renderYCircles(circlesGroup, yLinearScale, chosenYAxis, circleText);
+
+        // Update the toolTip
+        circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
         if (chosenYAxis === "healthcare") {
           healthcareLabel
