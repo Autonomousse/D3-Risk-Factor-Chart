@@ -122,7 +122,7 @@ function renderYCircles(circlesYGroup, newLinearYScale, chosenYAxis, circleText)
 
 // Function used to update the tooltip for different sets of circle groups
 // Only create tooltip on the circlesXGroup, would be redundent to create it on the circlesYGroup as well
-function updateToolTip(chosenXAxis, chosenYAxis, circlesXGroup) {
+function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
   console.log(chosenXAxis);
   // Create labels to hold the text to output based on selections
   var labelX;
@@ -175,7 +175,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesXGroup) {
   // Create the toolTip with the relevant information
   var toolTip = d3.tip()
     .attr("class", "d3-tip")
-    .offset([80, -60])
+    .offset([10, -85])
     .html(function (values) {
       if (chosenXAxis === "age") {
         return (`${values.state}<hr>${labelX} ${values[chosenXAxis]}<br>${labelY} ${values[chosenYAxis]}%`)
@@ -189,19 +189,24 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesXGroup) {
     });
 
   // Call the toolTip
-  circlesXGroup.call(toolTip);
+  circlesGroup.call(toolTip);
 
   // When user hovers over circleGroup object, display the data
-  circlesXGroup.on("mouseover", function (data) {
-    toolTip.show(data)
-    .attr("stroke", "black")
+  circlesGroup.on("mouseover", function (data) {
+    d3.select(this).style("stroke", "#222831");
+    toolTip.show(data);
   })
     // When user is no longer over the circleGroup object, hide the data
     .on("mouseout", function (data, index) {
+      d3.select(this).style("stroke", "#f2a365");
       toolTip.hide(data);
     });
 
-  return circlesXGroup;
+  // circlesGroup.on("mouseover", function() {
+  //   d3.select(this).style("stroke", "#f2a365");
+  // })
+
+  return circlesGroup;
 }
 
 // Retrieve the data from the CSV file and create the chart
