@@ -40,7 +40,6 @@ function xScale(riskData, chosenXAxis) {
     ])
     .range([0, width]);
 
-  // Return the scale
   return xLinearScale;
 }
 
@@ -56,7 +55,6 @@ function yScale(riskData, chosenYAxis) {
     ])
     .range([height, 0]);
 
-  // Return the scale
   return yLinearScale;
 }
 
@@ -71,7 +69,6 @@ function renderXAxis(newLinearXScale, xAxis) {
     .duration(1000)
     .call(bottomAxis);
 
-  // Return the new x-axis
   return xAxis;
 }
 
@@ -86,7 +83,6 @@ function renderYAxis(newLinearYScale, yAxis) {
     .duration(1000)
     .call(leftAxis);
 
-  // Return the new y-axis
   return yAxis;
 }
 
@@ -121,9 +117,8 @@ function renderYCircles(circlesYGroup, newLinearYScale, chosenYAxis, circleText)
 }
 
 // Function used to update the tooltip for different sets of circle groups
-// Only create tooltip on the circlesXGroup, would be redundent to create it on the circlesYGroup as well
 function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
-  console.log(chosenXAxis);
+
   // Create labels to hold the text to output based on selections
   var labelX;
   var labelY;
@@ -191,20 +186,16 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
   // Call the toolTip
   circlesGroup.call(toolTip);
 
-  // When user hovers over circleGroup object, display the data
+  // When user hovers over circleGroup object, display the data, change stroke color of circle
   circlesGroup.on("mouseover", function (data) {
     d3.select(this).style("stroke", "#222831");
     toolTip.show(data);
   })
-    // When user is no longer over the circleGroup object, hide the data
+    // When user is no longer over the circleGroup object, hide the data, return to original stroke color
     .on("mouseout", function (data, index) {
       d3.select(this).style("stroke", "#f2a365");
       toolTip.hide(data);
     });
-
-  // circlesGroup.on("mouseover", function() {
-  //   d3.select(this).style("stroke", "#f2a365");
-  // })
 
   return circlesGroup;
 }
@@ -255,6 +246,7 @@ d3.csv("../../assets/data/data.csv").then(function (riskData, err) {
     .attr("cy", val => yLinearScale(val[chosenYAxis]))
     .attr("r", 20);
 
+  // Append the state abbreviations over the circles
   var circleText = chartGroup.selectAll()
     .data(riskData)
     .enter()
@@ -342,6 +334,7 @@ d3.csv("../../assets/data/data.csv").then(function (riskData, err) {
         // Update the toolTip
         circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
+        // Change the active status of the x-axis selection
         if (chosenXAxis === "poverty") {
           povertyLabel
             .classed("active", true)
@@ -401,6 +394,7 @@ d3.csv("../../assets/data/data.csv").then(function (riskData, err) {
         // Update the toolTip
         circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
+        // Change the active status of the y-axis selection
         if (chosenYAxis === "healthcare") {
           healthcareLabel
             .classed("active", true)
