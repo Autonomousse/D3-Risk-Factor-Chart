@@ -78,3 +78,12 @@ h2 {
   text-align: center;
   padding-bottom: 10px;
 }
+
+/* Paragraph styling which justifies and centers text */
+.para-style {
+  font-size: 20px;
+  text-align: justify;
+  margin: 0 auto;
+  width: 58em;
+  padding-bottom: 10px;
+}
