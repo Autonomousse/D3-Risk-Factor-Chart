@@ -201,7 +201,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 }
 
 // Retrieve the data from the CSV file and create the chart
-d3.csv("https://github.com/Autonomousse/D3-Risk-Factor-Chart/blob/master/assets/data/data.csv").then(function (riskData, err) {
+d3.csv("/assets/data/data.csv").then(function (riskData, err) {
 
   // Throw an error if there is a problem loading the data
   if (err) throw err;
