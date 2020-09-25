@@ -36,7 +36,7 @@ function xScale(riskData, chosenXAxis) {
   // Set the min and max values so we can transition the scale later
   var xLinearScale = d3.scaleLinear()
     .domain([d3.min(riskData, values => values[chosenXAxis]) * 0.95,
-    d3.max(riskData, values => values[chosenXAxis])
+    d3.max(riskData, values => values[chosenXAxis] * 1.03)
     ])
     .range([0, width]);
 
@@ -51,7 +51,7 @@ function yScale(riskData, chosenYAxis) {
   // height first because the chart is created top down (0,0 is at the top left)
   var yLinearScale = d3.scaleLinear()
     .domain([d3.min(riskData, values => values[chosenYAxis]) * 0.8,
-    d3.max(riskData, values => values[chosenYAxis])
+    d3.max(riskData, values => values[chosenYAxis] * 1.06)
     ])
     .range([height, 0]);
 
