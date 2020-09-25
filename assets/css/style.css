@@ -9,28 +9,72 @@ html {
   min-height: 100%;
 }
 
+/* Page Background */
 body {
-  /* Padding bottom by footer height */
-  padding-bottom: 80px;
-}
-
-#footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%; /* Set the fixed height of the footer here */
-  height: 10px;
-  padding-top: 20px;
-  padding-bottom: 40px;
-  text-align: center;
-  background-color: #f5f5f5;
-}
-
-#footer p {
-  margin: 0;
-  font-size: 16px;
+  background-color: #30475e;
 }
 
 hr {
   background-color: #fff;
   margin: 5px 0 5px 0;
+}
+
+/* Google Fonts: Import */
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
+
+
+/* Container: comparison page */
+.container-compare {
+  background-color: #ececec;
+  /* padding: 0px 50px 60px 50px; */
+  margin: 50px auto 50px auto;
+}
+
+/* Container */
+.container {
+  background-color: #ececec;
+  padding: 25px 100px 25px 75px;
+  /* margin: 0px auto 0px auto; */
+}
+
+*, ::after, ::before {
+  box-sizing: content-box;
+}
+
+/* Header */
+header {
+  color: #222831;
+  font-size: 45px;
+  font-family: 'Lora', serif;
+  font-weight: 600;
+  font-style: italic;
+  text-align: center;
+  margin: 25px auto 25px auto;
+}
+
+h2 {
+  color: #222831;
+  font-family: 'Lora', serif;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Horizontal Rule */  
+.hr {
+  border: 1px solid #f2a365;
+  margin: 0px 15px 20px 15px;
+  }
+
+  /* Holds the common text attributes */
+.text {
+  color: #222831;
+  font-family: 'Lora', serif;
+  font-weight: 500;
+}
+
+/* Text formatting for any page */
+.text-style {
+  font-size: 20px;
+  text-align: center;
+  padding-bottom: 10px;
 }
