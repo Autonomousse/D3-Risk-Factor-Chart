@@ -14,7 +14,7 @@ The [data set](/assets/data/data.csv) included is based on 2014 ACS 1-year estim
 
 You need to create a scatter plot between two of the data variables such as `Healthcare vs. Poverty` or `Smokers vs. Age`.
 
-Using D3 techniques, create a scatter plot that represents each state with circle elements. You'll code this graphic in the `app.js` file of your directory—make sure you pull in the data from `data.csv` by using the `d3.csv` function.
+Using D3 techniques, create a scatter plot that represents each state with circle elements. You'll code this graphic in the `app.js` file of your directoryâ€”make sure you pull in the data from `data.csv` by using the `d3.csv` function.
 
 * Include state abbreviations in the circles.
 
